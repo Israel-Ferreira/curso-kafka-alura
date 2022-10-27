@@ -22,7 +22,9 @@ public class Main {
             System.out.println("TESTE");
 
             ProducerRecord<String,String> producerRecord =  new ProducerRecord<>("ECOMMERCE_NEW_ORDER", value,value);
-            producer.send(producerRecord);
+            producer.send(producerRecord, (recordMetadata, e) -> {
+                System.out.println(recordMetadata.topic());
+            });
 
         }
 
