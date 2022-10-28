@@ -1,5 +1,6 @@
 package io.codekaffee.curso.kafka;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -22,9 +23,17 @@ public class Main {
             System.out.println("TESTE");
 
             ProducerRecord<String,String> producerRecord =  new ProducerRecord<>("ECOMMERCE_NEW_ORDER", value,value);
-            producer.send(producerRecord, (recordMetadata, e) -> {
-                System.out.println(recordMetadata.topic());
-            });
+            Callback callback = (recordMetadata, e) -> System.out.println(recordMetadata.topic());
+
+
+
+            producer.send(producerRecord, callback);
+
+
+            String email = "Welcome! We are processing your order";
+
+            ProducerRecord<String, String> emailRecord =  new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", email, email);
+            producer.send(emailRecord);
 
         }
 
