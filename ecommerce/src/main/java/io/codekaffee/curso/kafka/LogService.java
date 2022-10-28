@@ -24,6 +24,7 @@ public class LogService {
             for(var record : records){
                 System.out.println(record);
                 System.out.println(record.key());
+                System.out.println("TOPIC: " + record.topic());
                 System.out.println(record.value());
                 System.out.println(record.partition());
             }
