@@ -22,6 +22,8 @@ public class FraudDetectionServiceApp {
                 for(var record : records){
                     System.out.println(record.key());
                     System.out.println(record.value());
+
+                    System.out.println("Partição: " + record.partition());
                     System.out.println("Processando novo pedido:  " + record.value());
                     Thread.sleep(5000L);
                 }

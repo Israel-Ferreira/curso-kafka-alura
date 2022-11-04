@@ -7,6 +7,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
+import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,18 +23,25 @@ public class Main {
 
             System.out.println("TESTE");
 
-            ProducerRecord<String,String> producerRecord =  new ProducerRecord<>("ECOMMERCE_NEW_ORDER", value,value);
-            Callback callback = (recordMetadata, e) -> System.out.println(recordMetadata.topic());
+
+            for (int i = 0; i < 100; i++) {
+                var key = UUID.randomUUID().toString();
+
+                ProducerRecord<String,String> producerRecord =  new ProducerRecord<>("ECOMMERCE_NEW_ORDER", key ,value);
+                Callback callback = (recordMetadata, e) -> System.out.println(recordMetadata.topic());
 
 
 
-            producer.send(producerRecord, callback);
+                producer.send(producerRecord, callback);
 
 
-            String email = "Welcome! We are processing your order";
+                String email = "Welcome! We are processing your order";
 
-            ProducerRecord<String, String> emailRecord =  new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", email, email);
-            producer.send(emailRecord);
+                ProducerRecord<String, String> emailRecord =  new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", key  , email);
+                producer.send(emailRecord);
+
+            }
+
 
         }
 
