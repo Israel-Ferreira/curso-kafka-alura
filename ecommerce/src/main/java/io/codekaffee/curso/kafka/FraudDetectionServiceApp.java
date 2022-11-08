@@ -38,6 +38,7 @@ public class FraudDetectionServiceApp {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "ECOMMERCE_FRAUD_SERVICE");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
 
 
         return props;
