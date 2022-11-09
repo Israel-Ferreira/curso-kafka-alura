@@ -4,8 +4,9 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class FraudDetectionServiceApp {
     public static void main(String[] args) {
-        KafkaService kafkaService = new KafkaService(FraudDetectionServiceApp.class.getName(), "ECOMMERCE_NEW_ORDER", FraudDetectionServiceApp::processAntiFraudDetection);
-        kafkaService.run();
+        try(KafkaService kafkaService = new KafkaService(FraudDetectionServiceApp.class.getName(), "ECOMMERCE_NEW_ORDER", FraudDetectionServiceApp::processAntiFraudDetection);) {
+            kafkaService.run();
+        }
     }
 
     private static void processAntiFraudDetection(ConsumerRecord<String, String> record){

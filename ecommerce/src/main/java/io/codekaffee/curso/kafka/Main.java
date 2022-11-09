@@ -11,14 +11,8 @@ import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-        Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.CLIENT_ID_CONFIG, "ecommerce-producer");
+        try(var dispatcher = new KafkaDispatcher();) {
 
-
-        try(KafkaProducer<String,String> producer =  new KafkaProducer<>(props)) {
             String value =  "1223344,9999,99931";
 
             System.out.println("TESTE");
@@ -27,23 +21,16 @@ public class Main {
             for (int i = 0; i < 100; i++) {
                 var key = UUID.randomUUID().toString();
 
-                ProducerRecord<String,String> producerRecord =  new ProducerRecord<>("ECOMMERCE_NEW_ORDER", key ,value);
-                Callback callback = (recordMetadata, e) -> System.out.println(recordMetadata.topic());
-
-
-
-                producer.send(producerRecord, callback);
-
+                dispatcher.send("ECOMMERCE_NEW_ORDER", key ,value);
 
                 String email = "Welcome! We are processing your order";
 
-                ProducerRecord<String, String> emailRecord =  new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", key  , email);
-                producer.send(emailRecord);
+                dispatcher.send("ECOMMERCE_SEND_EMAIL", key  , email);
 
             }
-
-
         }
+
+
 
     }
 }

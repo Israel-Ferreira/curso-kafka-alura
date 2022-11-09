@@ -4,8 +4,10 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class EmailService {
     public static void main(String[] args) {
-        KafkaService kafkaService = new KafkaService(EmailService.class.getName(), "ECOMMERCE_SEND_EMAIL", EmailService::parseRecord);
-        kafkaService.run();
+        try(KafkaService kafkaService = new KafkaService(EmailService.class.getName(), "ECOMMERCE_SEND_EMAIL", EmailService::parseRecord);) {
+            kafkaService.run();
+        }
+
     }
 
 
