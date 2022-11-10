@@ -19,7 +19,7 @@ public class KafkaDispatcher<T> implements Closeable {
 
 
     public void send(String topic, String key, T value){
-        ProducerRecord<String,T> producerRecord =  new ProducerRecord<>("ECOMMERCE_NEW_ORDER", key ,value);
+        ProducerRecord<String,T> producerRecord =  new ProducerRecord<>(topic, key ,value);
         Callback callback = (recordMetadata, e) -> System.out.println(recordMetadata.topic());
 
         producer.send(producerRecord, callback);
