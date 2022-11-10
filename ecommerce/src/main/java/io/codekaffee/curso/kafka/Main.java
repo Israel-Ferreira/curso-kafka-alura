@@ -1,29 +1,34 @@
 package io.codekaffee.curso.kafka;
 
+import io.codekaffee.curso.kafka.models.NewOrder;
+
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class Main {
     public static void main(String[] args) {
-        try(var dispatcher = new KafkaDispatcher();) {
+        try (var dispatcher = new KafkaDispatcher<NewOrder>();) {
+            try(var emailDispatcher = new KafkaDispatcher<String>()) {
 
-            String value =  "1223344,9999,99931";
+                System.out.println("TESTE");
 
-            System.out.println("TESTE");
+                for (int i = 0; i < 100; i++) {
+                    var userId = UUID.randomUUID().toString();
+                    var orderId = UUID.randomUUID().toString();
+                    BigDecimal amount =  BigDecimal.valueOf(Math.random() * 50000 + 1);
+
+                    NewOrder order = new NewOrder(userId, orderId, amount);
+                    String key = String.format("%s-%s", userId, orderId);
 
 
-            for (int i = 0; i < 100; i++) {
-                var key = UUID.randomUUID().toString();
+                    dispatcher.send("ECOMMERCE_NEW_ORDER", key, order);
 
-                dispatcher.send("ECOMMERCE_NEW_ORDER", key ,value);
-
-                String email = "Welcome! We are processing your order";
-
-                dispatcher.send("ECOMMERCE_SEND_EMAIL", key  , email);
-
+                    String email = "Welcome! We are processing your order";
+                    emailDispatcher.send("ECOMMERCE_SEND_EMAIL", key, email);
+                }
             }
+
         }
-
-
 
     }
 }
