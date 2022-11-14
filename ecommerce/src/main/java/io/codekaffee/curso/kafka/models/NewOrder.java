@@ -1,6 +1,9 @@
 package io.codekaffee.curso.kafka.models;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.math.BigDecimal;
 
 public class NewOrder {
@@ -39,5 +42,11 @@ public class NewOrder {
 
     public void setValue(BigDecimal value) {
         this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new GsonBuilder().create();
+        return gson.toJson(this);
     }
 }

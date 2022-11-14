@@ -1,5 +1,6 @@
 package io.codekaffee.curso.kafka;
 
+import io.codekaffee.curso.kafka.models.Email;
 import io.codekaffee.curso.kafka.models.NewOrder;
 
 import java.math.BigDecimal;
@@ -8,7 +9,7 @@ import java.util.UUID;
 public class Main {
     public static void main(String[] args) {
         try (var dispatcher = new KafkaDispatcher<NewOrder>();) {
-            try(var emailDispatcher = new KafkaDispatcher<String>()) {
+            try(var emailDispatcher = new KafkaDispatcher<Email>()) {
 
                 System.out.println("TESTE");
 
@@ -23,7 +24,9 @@ public class Main {
 
                     dispatcher.send("ECOMMERCE_NEW_ORDER", key, order);
 
-                    String email = "Welcome! We are processing your order";
+
+                    Email email = new Email("Welcome a board", "Welcome! We are processing your order");
+
                     emailDispatcher.send("ECOMMERCE_SEND_EMAIL", key, email);
                 }
             }

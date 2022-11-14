@@ -13,7 +13,7 @@ public class LogService {
     public static void main(String[] args) {
         Pattern pattern = Pattern.compile("ECOMMERCE.*");
 
-        try(var kafkaService = new KafkaService(LogService.class.getName(), pattern, LogService::printRecord)){
+        try(var kafkaService = new KafkaService<String>(LogService.class.getName(), pattern, LogService::printRecord, String.class)){
             kafkaService.run();
         }
 

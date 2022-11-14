@@ -12,22 +12,22 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-public class KafkaService implements Closeable {
+public class KafkaService<T> implements Closeable {
 
-    private final KafkaConsumer<String, String> consumer;
-    private final ConsumerFunction callback;
+    private final KafkaConsumer<String, T> consumer;
+    private final ConsumerFunction<T> callback;
 
 
 
-    public KafkaService(String consumerGroupName,String topic, ConsumerFunction callback) {
-        this.consumer = new KafkaConsumer<>(getProperties(consumerGroupName));
+    public KafkaService(String consumerGroupName,String topic, ConsumerFunction<T> callback, Class<T> clazz) {
+        this.consumer = new KafkaConsumer<>(getProperties(consumerGroupName, clazz));
         consumer.subscribe(Collections.singletonList(topic));
 
         this.callback = callback;
     }
 
-   public KafkaService(String consumerGroupName, Pattern pattern, ConsumerFunction callback){
-        this.consumer = new KafkaConsumer<String, String>(getProperties(consumerGroupName));
+   public KafkaService(String consumerGroupName, Pattern pattern, ConsumerFunction<T> callback, Class<T> clazz){
+        this.consumer = new KafkaConsumer<String, T>(getProperties(consumerGroupName, clazz));
         consumer.subscribe(pattern);
 
         this.callback = callback;
@@ -43,14 +43,15 @@ public class KafkaService implements Closeable {
     }
 
 
-    private  Properties getProperties(String consumerGroupName){
+    private  Properties getProperties(String consumerGroupName, Class<T> clazz){
         Properties props = new Properties();
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, consumerGroupName);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, GsonDeserializer.class.getName());
         props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
         props.put(ConsumerConfig.CLIENT_ID_CONFIG, UUID.randomUUID().toString());
+        props.put(GsonDeserializer.TYPE_CONFIG, clazz.getName());
 
 
         return props;
