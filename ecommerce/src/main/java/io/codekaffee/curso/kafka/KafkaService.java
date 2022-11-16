@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import java.io.Closeable;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -33,6 +34,22 @@ public class KafkaService<T> implements Closeable {
         this.callback = callback;
    }
 
+
+   public KafkaService(String consumerGroupName, Pattern pattern, ConsumerFunction<T> callback, Class<T> clazz, Map<String, Object> configMap){
+
+        if(!configMap.isEmpty()){
+            this.consumer = new KafkaConsumer<String, T>(getProperties(consumerGroupName, clazz, configMap));
+        }else{
+            this.consumer = new KafkaConsumer<String, T>(getProperties(consumerGroupName, clazz));
+        }
+
+       consumer.subscribe(pattern);
+
+       this.callback = callback;
+   }
+
+
+
     public void run(){
         while (true){
             var records = consumer.poll(Duration.ofMillis(100));
@@ -55,6 +72,13 @@ public class KafkaService<T> implements Closeable {
 
 
         return props;
+    }
+
+
+    private Properties getProperties(String consumerGroupName, Class<T> clzz, Map<String, Object> configMap){
+        Properties properties = this.getProperties(consumerGroupName, clzz);
+        properties.putAll(configMap);
+        return  properties;
     }
 
     @Override

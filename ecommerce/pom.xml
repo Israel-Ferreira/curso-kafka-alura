@@ -6,7 +6,14 @@
 
     <groupId>io.codekaffee.curso.kafka</groupId>
     <artifactId>ecommerce</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>email-service</module>
+        <module>service-log</module>
+        <module>service-fraud-detection-app</module>
+        <module>service-order-producer</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

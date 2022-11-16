@@ -6,7 +6,7 @@ import io.codekaffee.curso.kafka.models.NewOrder;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public class Main {
+public class OrderProducerService {
     public static void main(String[] args) {
         try (var dispatcher = new KafkaDispatcher<NewOrder>();) {
             try(var emailDispatcher = new KafkaDispatcher<Email>()) {
