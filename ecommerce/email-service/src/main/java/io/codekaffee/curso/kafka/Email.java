@@ -1,4 +1,4 @@
-package io.codekaffee.curso.kafka.models;
+package io.codekaffee.curso.kafka;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

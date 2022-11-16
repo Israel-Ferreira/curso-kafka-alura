@@ -1,6 +1,5 @@
 package io.codekaffee.curso.kafka;
 
-import io.codekaffee.curso.kafka.models.NewOrder;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class FraudDetectionServiceApp {

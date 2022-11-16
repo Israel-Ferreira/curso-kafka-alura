@@ -1,7 +1,6 @@
 package io.codekaffee.curso.kafka;
 
-import io.codekaffee.curso.kafka.models.Email;
-import io.codekaffee.curso.kafka.models.NewOrder;
+
 
 import java.math.BigDecimal;
 import java.util.UUID;
