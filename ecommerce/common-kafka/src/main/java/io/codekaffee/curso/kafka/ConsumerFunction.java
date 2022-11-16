@@ -1,4 +1,4 @@
-package io.codekaffee.curso.kafka.models;
+package io.codekaffee.curso.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 

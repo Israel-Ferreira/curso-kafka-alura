@@ -1,6 +1,5 @@
 package io.codekaffee.curso.kafka;
 
-import io.codekaffee.curso.kafka.models.ConsumerFunction;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
